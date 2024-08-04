@@ -1,13 +1,13 @@
 'use strict';
 
-const PREVIOUSLY_VISITED_ID = "previouslyVisited";
+const PREVIOUSLY_VIEWED_ID = "previouslyViewed";
 function getHash() {
     const pathname = window.location.pathname;
     return pathname.substring(pathname.lastIndexOf("/") + 1);
 }
 
-function getPreviouslyVisited() {
-    const savedData = localStorage.getItem(PREVIOUSLY_VISITED_ID);
+function getPreviouslyViewed() {
+    const savedData = localStorage.getItem(PREVIOUSLY_VIEWED_ID);
     if (savedData) {
         return JSON.parse(savedData);
     } else {
@@ -15,12 +15,12 @@ function getPreviouslyVisited() {
     }
 }
 
-function viewPreviouslyVisited() {
-    const ul = document.querySelector("#previouslyVisited ul");
-    const savedData = getPreviouslyVisited();
+function viewpreviouslyViewed() {
+    const ul = document.querySelector("#previouslyViewed ul");
+    const savedData = getPreviouslyViewed();
     if (savedData.length >= 1) {
         // This header is hidden by default
-        document.querySelector("#previouslyVisited h2").setAttribute("style", "");
+        document.querySelector("#previouslyViewed h2").setAttribute("style", "");
     }
     for (let i = 0; i < savedData.length; i++) {
         const hash = savedData[i];
@@ -34,9 +34,8 @@ function viewPreviouslyVisited() {
     }
 }
 
-function addPreviouslyVisited() {
-    const savedData = getPreviouslyVisited();
-    const currentHash = getHash()
+function addPreviouslyViewed() {
+    const savedData = getPreviouslyViewed();
     savedData.push(getHash());
-    localStorage.setItem(PREVIOUSLY_VISITED_ID, JSON.stringify(Array.from(new Set(savedData))));
+    localStorage.setItem(PREVIOUSLY_VIEWED_ID, JSON.stringify(Array.from(new Set(savedData))));
 }
