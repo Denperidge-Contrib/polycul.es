@@ -1,6 +1,11 @@
 'use strict';
 
 const PREVIOUSLY_VISITED_ID = "previouslyVisited";
+function getHash() {
+    const pathname = window.location.pathname;
+    return pathname.substring(pathname.lastIndexOf("/") + 1);
+}
+
 function getPreviouslyVisited() {
     const savedData = localStorage.getItem(PREVIOUSLY_VISITED_ID);
     if (savedData) {
@@ -13,12 +18,16 @@ function getPreviouslyVisited() {
 function viewPreviouslyVisited() {
     const ul = document.querySelector("#previouslyVisited ul");
     const savedData = getPreviouslyVisited();
+    if (savedData.length >= 1) {
+        // This header is hidden by default
+        document.querySelector("#previouslyVisited h2").setAttribute("style", "");
+    }
     for (let i = 0; i < savedData.length; i++) {
-        const link = savedData[i];
+        const hash = savedData[i];
         const a = document.createElement("a");
-        a.setAttribute("href", link);
+        a.setAttribute("href", window.location.origin + "/" + hash);
         const li = document.createElement("li");
-        li.innerText = link;
+        li.innerText = hash;
 
         a.appendChild(li)
         ul.appendChild(a);
@@ -27,6 +36,7 @@ function viewPreviouslyVisited() {
 
 function addPreviouslyVisited() {
     const savedData = getPreviouslyVisited();
-    savedData.push(window.location.href);
+    const currentHash = getHash()
+    savedData.push(getHash());
     localStorage.setItem(PREVIOUSLY_VISITED_ID, JSON.stringify(Array.from(new Set(savedData))));
 }
